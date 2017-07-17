@@ -5,31 +5,31 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const postcssImport = require("postcss-import");
 const cssnext = require("postcss-cssnext");
 
-const PATH = require('./path');
+// const PATH = require('./path');
 const path = require('path');
 const fs = require('fs');
-const entryFiles = fs.readdirSync(PATH.ENTRY_PATH);
+// const entryFiles = fs.readdirSync(PATH.ENTRY_PATH);
 
-const files = [];
-const entries = {};
+// const files = [];
+// const entries = {};
 
-entryFiles
-  .filter(file =>
-    file.split('.')[0] && file.split('.').slice(-1)[0] === 'js'
-  )
-  .forEach(file => {
-    const filename = file.split('.')[0];
-    const filepath = path.join(PATH.ENTRY_PATH, file)
-    entries[filename] = filepath;
-});
+// entryFiles
+//   .filter(file =>
+//     file.split('.')[0] && file.split('.').slice(-1)[0] === 'js'
+//   )
+//   .forEach(file => {
+//     const filename = file.split('.')[0];
+//     const filepath = path.join(PATH.ENTRY_PATH, file)
+//     entries[filename] = filepath;
+// });
 
 module.exports = {
   entry: {
-    index: './src/js/index.js'
+    index: './app/js/index.js'
   },
   output: {
     filename: '[name].bundle.js',
-    path: PATH.BUILD_PATH
+    path: './build'
   },
   module: {
     loaders: [
@@ -49,12 +49,6 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
-  postcss: function() {
-    return [
-      postcssImport({addDependencyTo: webpack}),
-      cssnext({autoprefixer: {browsers: "ie >= 9, ..."}})
-    ];
-  },
   plugins: [
     new ExtractTextPlugin("[name].bundle.css", {
       allChunks: true
@@ -64,13 +58,9 @@ module.exports = {
       jQuery: "jquery",
       "window.jQuery": "jquery"
     }),
-    new CleanPlugin(PATH.BUILD_PATH, {
-      root: PATH.ROOT_PATH,
-      verbose: true
-    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'src/index.html',
+      template: 'app/index.html',
       chunks: ['index']
     })
   ],
